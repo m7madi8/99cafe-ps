@@ -241,7 +241,21 @@
         } catch {}
         try { localStorage.setItem('lang', lang); } catch {}
       }
+      function injectDrinkAddons() {
+        const drinks = document.getElementById('drinks');
+        if (!drinks) return;
+        const fresherSection = drinks.querySelector('[data-en="FRESHER"]')?.closest('.bg-cafe-white.rounded-xl');
+        if (!fresherSection) return;
+        fresherSection.querySelectorAll('.menu-item').forEach(item => {
+          if (item.querySelector('.drink-addons')) return;
+          const addons = document.createElement('div');
+          addons.className = 'drink-addons mt-2 pt-2 border-t border-cafe-black/10 text-sm text-cafe-red';
+          addons.innerHTML = '<p class="mb-1"><span data-en="Soda (no extra)" data-ar="صودا بدون زيادة سعر">Soda (no extra)</span></p><p class="mb-0"><span data-en="XL (+4 NIS)" data-ar="XL (+4 شيكل)">XL (+4 NIS)</span></p>';
+          item.appendChild(addons);
+        });
+      }
       function initLanguage() {
+        injectDrinkAddons();
         let lang = 'en';
         try { lang = localStorage.getItem('lang') || 'en'; } catch {}
         setLanguage(lang);
@@ -306,6 +320,8 @@
         'Soda': 'صودا',
         'Red Bull': 'ريد بول',
         'Red Bull + 3.99 NIS': 'ريد بول + 3.99 NIS',
+        'Soda (no extra)': 'صودا بدون زيادة سعر',
+        'XL (+4 NIS)': 'XL (+4 شيكل)',
         'Disposable hose  + 5 NIS': 'بربيج للاستخدام مره واحده  + 5 NIS',
         'add chicken + 5 NIS': 'أضف دجاج + 5 NIS',
 
@@ -376,7 +392,16 @@
         'Pomegranate Juice': 'عصير رمان',
         'Lemonade ': 'ليمونادة ',
 
-        // Refresher item
+        // Fresher items
+        'FRESHER': 'فريشر',
+        'Tango Fresher (Green Apple & Kiwi)': 'تانغو فريشر (تفاح أخضر و كيوي)',
+        'Hawaiian Fresher (Tropical & Pineapple)': 'هاوايان فريشر (استوائي و أناناس)',
+        'Zest Fresher (Watermelon & Green Apple)': 'زست فريشر (بطيخ و تفاح أخضر)',
+        'Streki Fresher (Strawberry & Kiwi)': 'ستريكي فريشر (فراولة و كيوي)',
+        'Pinerazz Fresher (Pineapple & Raspberry)': 'باينراز فريشر (أناناس و توت علّيق)',
+        'Fresher – Choose Your Flavor': 'فريشر – اختر نكهتك',
+        'Pick your flavor': 'اختر النكهة الخاصة بك',
+        // Legacy
         'Pinky Lemonade': 'ليمونادة وردية',
 
         // Frappe items
@@ -1600,14 +1625,19 @@
                         </div>
                     </div>
 
-                    <!-- Refresher -->
+                    <!-- Fresher (FRESHER) -->
                     <div class="bg-cafe-white rounded-xl p-6 shadow-lg">
                         <h3 class="text-2xl font-bold text-cafe-red mb-4 border-b-2 border-cafe-red pb-2">
                             <i class="fas fa-bottle-water text-sky-600 ml-2"></i>
-                            Refresher
+                            <span class="menu-section-title" data-en="FRESHER" data-ar="فريشر">FRESHER</span>
                         </h3>
                         <div class="space-y-3">
-                            <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black">Pinky Lemonade</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">16.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">18.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4" data-name-en="Tango Fresher (Green Apple &amp; Kiwi)" data-name-ar="تانغو فريشر (تفاح أخضر و كيوي)"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black menu-item-name">Tango Fresher (Green Apple &amp; Kiwi)</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4" data-name-en="Hawaiian Fresher (Tropical &amp; Pineapple)" data-name-ar="هاوايان فريشر (استوائي و أناناس)"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black menu-item-name">Hawaiian Fresher (Tropical &amp; Pineapple)</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4" data-name-en="Zest Fresher (Watermelon &amp; Green Apple)" data-name-ar="زست فريشر (بطيخ و تفاح أخضر)"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black menu-item-name">Zest Fresher (Watermelon &amp; Green Apple)</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4" data-name-en="Streki Fresher (Strawberry &amp; Kiwi)" data-name-ar="ستريكي فريشر (فراولة و كيوي)"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black menu-item-name">Streki Fresher (Strawberry &amp; Kiwi)</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4" data-name-en="Pinerazz Fresher (Pineapple &amp; Raspberry)" data-name-ar="باينراز فريشر (أناناس و توت علّيق)"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black menu-item-name">Pinerazz Fresher (Pineapple &amp; Raspberry)</h4></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
+                            <div class="menu-item bg-cafe-gray rounded-lg p-4 fresher-choose-flavor" data-name-en="Fresher – Choose Your Flavor" data-name-ar="فريشر – اختر نكهتك" data-fresher-flavor="true"><div class="flex justify-between items-start gap-4"><div><h4 class="font-semibold text-cafe-black menu-item-name">Fresher – Choose Your Flavor</h4><p class="text-sm text-cafe-black/60 mt-1 flavor-hint" data-en="Pick your flavor" data-ar="اختر النكهة الخاصة بك">Pick your flavor</p></div><div class="text-right price-group"><div class="price-chip"><span class="label">Mini</span><span class="font-bold text-cafe-red">17.99</span></div><div class="price-chip mt-2 ml-auto"><span class="label">Normal</span><span class="font-bold text-cafe-red">19.99</span></div></div></div></div>
                         </div>
                     </div>
 
@@ -1657,7 +1687,7 @@
                              <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Lemon Chat</h4></div><div class="text-right"><div class="font-bold text-cafe-red">4.99</div></div></div></div>
                              <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Zero Chat</h4></div><div class="text-right"><div class="font-bold text-cafe-red">4.99</div></div></div></div>
                              <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Soda</h4></div><div class="text-right"><div class="font-bold text-cafe-red">4.99</div></div></div></div>
-                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">Red Bull</h4></div><div class="text-right"><div class="font-bold text-cafe-red">11.99</div></div></div></div>
+                             <div class="menu-item bg-cafe-gray rounded-lg p-4"><div class="flex justify-between items-center"><div><h4 class="font-semibold text-cafe-black">XL </h4></div><div class="text-right"><div class="font-bold text-cafe-red">11.99</div></div></div></div>
 
 
                          </div>
