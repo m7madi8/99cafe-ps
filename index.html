@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
@@ -273,6 +273,10 @@
       // English -> Arabic mapping for menu sections/items/labels
       const EN_AR_MAP = {
          'Sold out': 'نفدت الكمية',
+        'Menu': 'القائمة',
+        'Home': 'الرئيسية',
+        'It\'s more than a number': 'أكثر من مجرد رقم',
+        'Enjoy the best drinks and food in a cozy atmosphere': 'استمتع بأفضل المشروبات والطعام في أجواء مريحة',
         // Breakfast
         'Breakfast Menu': 'قائمة الإفطار',
         'Served daily from 9:00 AM to 12:00 PM': 'يُقدَّم يومياً من 9:00 AM إلى 12:00 PM',
@@ -529,13 +533,13 @@
 
       function applyMenuTranslations(lang) {
         const isArabic = lang === 'ar';
-        const scopeIds = ['menu', 'breakfastModal'];
+        const scopeIds = ['menu', 'breakfastModal', 'footer'];
         const nodes = [];
         scopeIds.forEach(id => {
           const scope = document.getElementById(id);
           if (!scope) return;
-          // Exclude the main decorated title; it is handled via AR_KEYS to avoid overwriting/capturing wrong data-en
-          scope.querySelectorAll('h2:not(.decorated-title), h3, h4, p, .price-chip .label, .soldout-badge').forEach(n => nodes.push(n));
+          const selector = id === 'footer' ? 'h2, h3, h4, p, a[data-en]' : 'h2:not(.decorated-title), h3, h4, p, .price-chip .label, .soldout-badge';
+          scope.querySelectorAll(selector).forEach(n => nodes.push(n));
         });
         nodes.forEach(el => {
           // Prefer preserving original HTML for elements that may contain <br>
@@ -2012,22 +2016,29 @@
 
 
     <!-- Footer -->
-    <footer class="bg-cafe-black text-cafe-white py-8">
-        <button id="backToTop" aria-label="Back to top" class="hidden fixed bottom-6 right-6 z-40 bg-cafe-red text-white w-12 h-12 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 grid place-items-center">
-            <i class="fas fa-arrow-up"></i>
-        </button>
-        <div class="container mx-auto px-4 text-center">
-            <div class="flex flex-col items-center justify-center mb-4">
-                <img src="99logo2.png" alt="99 Cafe Logo" class="w-24 h-24 object-contain mb-3" />
-                <div class="text-xl md:text-2xl font-semibold italic text-cafe-red-light tracking-wide mb-2" style="font-family: 'Montserrat', sans-serif; letter-spacing: 2px;">
-                    It's more than a number
+    <footer id="footer" class="bg-cafe-black text-cafe-white relative overflow-hidden">
+        <!-- Accent line -->
+        <div class="h-1 w-full bg-gradient-to-r from-cafe-red via-cafe-red-light to-cafe-red"></div>
+        <div class="container mx-auto px-4 py-10 md:py-12">
+            <div class="flex flex-col items-center text-center max-w-xl mx-auto">
+                <a href="#" class="inline-block focus:outline-none focus:ring-2 focus:ring-cafe-red-light rounded-full transition transform hover:scale-105" aria-label="99 Cafe home">
+                    <img src="99logo2.png" alt="99 Cafe Logo" class="w-20 h-20 md:w-24 md:h-24 object-contain" />
+                </a>
+                <p class="mt-4 text-xl md:text-2xl font-semibold italic text-cafe-red-light tracking-wide" style="font-family: 'Montserrat', sans-serif; letter-spacing: 2px;" data-en="It's more than a number" data-ar="أكثر من مجرد رقم">It's more than a number</p>
+                <p class="mt-2 text-cafe-gray/90 text-sm md:text-base" data-en="Enjoy the best drinks and food in a cozy atmosphere" data-ar="استمتع بأفضل المشروبات والطعام في أجواء مريحة">Enjoy the best drinks and food in a cozy atmosphere</p>
+                <nav class="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2" aria-label="Footer navigation">
+                    <a href="#menu" class="text-cafe-gray/80 hover:text-cafe-red-light text-sm font-medium transition" data-en="Menu" data-ar="القائمة">Menu</a>
+                    <span class="text-cafe-gray/40" aria-hidden="true">·</span>
+                    <a href="#hero" class="text-cafe-gray/80 hover:text-cafe-red-light text-sm font-medium transition" data-en="Home" data-ar="الرئيسية">Home</a>
+                </nav>
+                <div class="mt-8 pt-6 border-t border-white/10 w-full">
+                    <p class="text-cafe-gray/70 text-xs md:text-sm">&copy; 2026 99 Cafe. All rights reserved.</p>
                 </div>
             </div>
-            <p class="text-cafe-gray mb-4">Enjoy the best drinks and food in a cozy atmosphere</p>
-           
-            <p class="text-cafe-gray mt-6">&copy; 2025 99 Cafe. All rights reserved.</p>
-            
         </div>
+        <button id="backToTop" aria-label="Back to top" class="hidden fixed bottom-6 right-6 z-40 bg-cafe-red text-white w-12 h-12 rounded-full shadow-lg hover:shadow-xl hover:bg-cafe-red-light transition-all duration-300 grid place-items-center">
+            <i class="fas fa-arrow-up"></i>
+        </button>
     </footer>
 
     <!-- Flavor Picker Modal -->
